@@ -1,0 +1,5 @@
+{
+  "name": "Remix: 家人助餐服务",
+  "description": "为老人设计的简洁助餐服务，支持语音交互、自动播报和家人代付。",
+  "requestFramePermissions": []
+}

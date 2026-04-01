@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #FFE346;
+  --color-text-main: #1A1A1A;
+  --color-text-sub: #666666;
+  --color-text-hint: #999999;
+  --color-bg-warm: #FAFAF8;
+  --color-success: #52C41A;
+  --color-warning: #FF9800;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-100 font-sans text-text-main;
+    font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
+  }
+}
+
+@layer components {
+  .phone-shell {
+    @apply w-[390px] h-[844px] bg-bg-warm rounded-[40px] border-[8px] border-gray-800 shadow-2xl relative overflow-hidden flex flex-col mx-auto my-8;
+  }
+  
+  .card {
+    @apply bg-white rounded-[16px] shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-6;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-text-main rounded-[24px] h-[64px] flex items-center justify-center font-semibold text-[18px] w-full active:opacity-80 transition-opacity;
+  }
+  
+  .btn-secondary {
+    @apply bg-white border border-gray-200 text-text-sub rounded-[24px] h-[48px] flex items-center justify-center text-[18px] w-full active:bg-gray-50 transition-colors;
+  }
+
+  .safe-top {
+    @apply pt-[44px];
+  }
+
+  .safe-bottom {
+    @apply pb-[34px];
+  }
+}
+
+@keyframes breathing {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.animate-breathing {
+  animation: breathing 2s ease-in-out infinite;
+}
+
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-ripple {
+  animation: ripple 1.5s ease-out infinite;
+}
+
+@keyframes flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-flow {
+  background-size: 200% 200%;
+  animation: flow 8s ease-in-out infinite;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.bg-mesh {
+  background: linear-gradient(180deg, #FFF9E6 0%, #FFFDF5 100%);
+}
+
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    inset 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.liquid-glass:active {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(0.95);
+}
