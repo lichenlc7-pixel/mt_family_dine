@@ -9,16 +9,6 @@
     <meta name="theme-color" content="#FFC300" />
     <link rel="manifest" href="/manifest.json" />
     <title>美团外卖语音助手</title>
-    <script>
-      function fixVh() {
-        const vh = window.innerHeight;
-        document.documentElement.style.setProperty('--real-vh', vh + 'px');
-        console.log('innerHeight:', vh);
-      }
-      fixVh();
-      window.addEventListener('resize', fixVh);
-      window.addEventListener('orientationchange', fixVh);
-    </script>
   </head>
   <body>
     <div id="root"></div>
