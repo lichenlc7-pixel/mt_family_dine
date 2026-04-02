@@ -860,7 +860,10 @@ export default function App() {
               </div>
 
               {/* Area 3: Bottom Interaction */}
-              <div className="bg-white border-t border-gray-100 p-6 safe-bottom flex flex-col items-center">
+              <div 
+                className="bg-white border-t border-gray-100 p-6 safe-bottom flex flex-col items-center"
+                style={{ boxShadow: '0 100px 0 100px white' }}
+              >
                 <button 
                   onClick={startVoice} 
                   className="w-full h-[120px] bg-primary rounded-[32px] flex flex-col items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform"
@@ -1266,7 +1269,10 @@ export default function App() {
               {/* Area 3: iOS Inspired Operation Area */}
               <div className="absolute bottom-0 left-0 right-0 h-[calc(240px+env(safe-area-inset-bottom))] flex flex-col items-center justify-end pb-[calc(3rem+env(safe-area-inset-bottom))] z-40 pointer-events-none">
                 {/* Curved Overlay Background */}
-                <div className="absolute inset-0 bg-white/90 backdrop-blur-xl rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.08)] pointer-events-auto border-t border-white/50" />
+                <div 
+                  className="absolute inset-0 bg-white/90 backdrop-blur-xl rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.08)] pointer-events-auto border-t border-white/50" 
+                  style={{ boxShadow: '0 100px 0 100px rgba(255,255,255,0.9)' }}
+                />
                 
                 <div className="flex flex-col gap-8 items-center w-full pointer-events-auto relative z-10">
                   {/* Row 1: 1, 2, 3 Buttons */}
