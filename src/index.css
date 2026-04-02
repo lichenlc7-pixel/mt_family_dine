@@ -12,17 +12,14 @@
 
 @layer base {
   html, body, #root {
-    height: 100dvh;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     width: 100%;
     overflow: clip;
     margin: 0;
     padding: 0;
     overscroll-behavior: none;
-    background-color: red !important; /* 调试用：底层设为红色 */
+    background-color: #FAFAF8;
   }
 
   body {
@@ -33,9 +30,18 @@
 
 @layer components {
   .phone-shell {
-    @apply w-full h-[100dvh] sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
-    background-color: blue !important; /* 调试用：中层设为蓝色 */
-    border-bottom: 10px solid yellow !important; /* 调试用：底部黄色边框 */
+    @apply w-full sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] bg-bg-warm sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
+    /* 移动端强制物理全屏 */
+    position: absolute;
+    inset: 0;
+  }
+  
+  /* 桌面端恢复正常布局 */
+  @media (min-width: 640px) {
+    .phone-shell {
+      position: relative;
+      inset: auto;
+    }
   }
   
   .card {
@@ -55,7 +61,7 @@
   }
 
   .safe-bottom {
-    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
   }
 
   .extend-bg-bottom {
