@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef, ReactNode } from 'react';
+import { useState, useEffect, useRef, ReactNode, useMemo } from 'react';
 import { Mic, Phone, Keyboard, X, Check, AlertTriangle, ChevronRight, Volume2, VolumeX, Video, Share2, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -11,7 +11,7 @@ import { QRCodeSVG } from 'qrcode.react';
 type AppState = 'WELCOME' | 'MAIN' | 'VOICE' | 'SUMMARY';
 type DeliveryStatus = 'RECOMMENDING' | 'DELIVERING' | 'DELIVERED';
 type VoiceViewMode = 'RECOMMEND' | 'CHAT';
-type VoiceStep = 'MEAL_SELECT' | 'MEAT_SELECT' | 'SPEC_SELECT' | 'ADDRESS_CONFIRM' | 'ORDER_PLACING';
+type VoiceStep = 'MEAL_SELECT' | 'MEAT_SELECT' | 'SPEC_SELECT' | 'ADDRESS_CONFIRM' | 'ORDER_PLACING' | 'CS_MAIN' | 'CS_ADDRESS_INPUT';
 
 interface Meal {
   id: number;
@@ -57,12 +57,32 @@ const MEALS: Meal[] = [
   },
   { 
     id: 4,
-    image: 'https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?auto=format&fit=crop&w=600&h=450', 
-    name: '皮蛋瘦肉粥', 
-    shop: '粥品世家', 
-    desc: '暖胃易吸收',
-    reason: '软烂暖胃，好吸收',
-    deliveryTime: '20分钟',
+    image: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=600&h=450', 
+    name: '番茄鲜虾烩饭', 
+    shop: '轻食西餐厅', 
+    desc: '酸甜开胃，鲜虾Q弹',
+    reason: '番茄浓郁开胃，鲜虾补充优质蛋白',
+    deliveryTime: '35分钟',
+    hasSpecs: false
+  },
+  { 
+    id: 5,
+    image: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=600&h=450', 
+    name: '照烧鸡腿饭', 
+    shop: '吉野家', 
+    desc: '咸甜适口，鸡肉滑嫩',
+    reason: '经典照烧风味，好吃不贵',
+    deliveryTime: '30分钟',
+    hasSpecs: false
+  },
+  { 
+    id: 6,
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&h=450', 
+    name: '清炒时蔬', 
+    shop: '健康小厨', 
+    desc: '清淡解腻，补充维生素',
+    reason: '绿色健康，清肠胃',
+    deliveryTime: '25分钟',
     hasSpecs: false
   },
 ];
@@ -171,6 +191,18 @@ export default function App() {
 
   const currentMeal = MEALS[mealIndex];
 
+  const estimatedTime = useMemo(() => {
+    const minutes = parseInt(currentMeal.deliveryTime.replace(/\D/g, '')) || 30;
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + minutes);
+    return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  }, [currentMeal.deliveryTime]);
+
+  const deliveredTime = useMemo(() => {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  }, [deliveryStatus]);
+
   // Typewriter effect for chat
   useEffect(() => {
     if (chatText) {
@@ -265,19 +297,27 @@ export default function App() {
   const startVoice = () => {
     setAppState('VOICE');
     setVoiceViewMode('RECOMMEND');
-    setVoiceStep('MEAL_SELECT');
     setSelectedMeal(null);
     setSelectedSpec(null);
     setIsTransitioning(false);
     setIsThinking(true);
     setIsMuted(false); // Default speakerphone ON
-    setVoiceMeals([MEALS[0], MEALS[1]]);
     setDisplayedChatText('');
-    
-    setTimeout(() => {
-      setIsThinking(false);
-      speak(`您好！我是美团外卖订餐助手。想吃${MEALS[0].name}选1，想吃${MEALS[1].name}选2，换一批选3。`);
-    }, 1000);
+
+    if (deliveryStatus === 'DELIVERING') {
+      setVoiceStep('CS_MAIN');
+      setTimeout(() => {
+        setIsThinking(false);
+        speak('您好，这里是智能客服。您的订单正在由骑手配送中。请问您遇到了什么问题？催单请按1，修改地址请按2，联系骑手请按3。');
+      }, 1000);
+    } else {
+      setVoiceStep('MEAL_SELECT');
+      setVoiceMeals([MEALS[0], MEALS[1]]);
+      setTimeout(() => {
+        setIsThinking(false);
+        speak(`您好！我是美团外卖订餐助手。想吃${MEALS[0].name}选1，想吃${MEALS[1].name}选2，换一批选3。`);
+      }, 1000);
+    }
   };
 
   const handleDial = (num: string) => {
@@ -308,11 +348,15 @@ export default function App() {
       } else if (n === '3') {
         setIsThinking(true);
         setDisplayedChatText('');
-        const nextMeals = [MEALS[2], MEALS[3]];
+        
+        const currentIndex = MEALS.findIndex(m => m.id === voiceMeals[0].id);
+        const nextIndex = (currentIndex + 2) % MEALS.length;
+        const nextMeals = [MEALS[nextIndex], MEALS[nextIndex + 1]];
+        
         setVoiceMeals(nextMeals);
         setTimeout(() => {
           setIsThinking(false);
-          speak(`没问题，再给您换两个菜。这组怎么样？1号是${nextMeals[0].name}，2号是${nextMeals[1].name}。您看看有喜欢的吗？`);
+          speak(`没问题，再给您换两个菜。想吃${nextMeals[0].name}选1，想吃${nextMeals[1].name}选2，继续换一批请选3。`);
         }, 1000);
       } else if (n === '0') {
         setVoiceViewMode('CHAT');
@@ -372,7 +416,7 @@ export default function App() {
         setVoiceStep('ORDER_PLACING');
         speak('正在帮您下单，请稍等…');
         setTimeout(() => {
-          speak('下单成功！骑手预计25分钟送达');
+          speak(`下单成功！骑手预计${selectedMeal?.deliveryTime || '30分钟'}送达`);
           setTimeout(() => {
             endVoice(true, `✓ 已帮您下单：${selectedMeal?.name}`);
           }, 2000);
@@ -408,11 +452,68 @@ export default function App() {
       }
     };
 
+    const handleCSMain = (n: string) => {
+      if (n === '1') {
+        setIsThinking(true);
+        setDisplayedChatText('');
+        setTimeout(() => {
+          setIsThinking(false);
+          speak('已为您加急催单，骑手正在全速赶往您的地址，请您再耐心等待一下。');
+          setTimeout(() => {
+            endVoice(true, '✓ 已为您加急催单');
+          }, 4000);
+        }, 1000);
+      } else if (n === '2') {
+        setIsTransitioning(true);
+        setVoiceStep('CS_ADDRESS_INPUT');
+        speak('好的，请告诉我您的新地址');
+        setTimeout(() => {
+          setIsTransitioning(false);
+          setIsListening(true);
+          setTranscribedText('');
+          
+          const fullText = "嗯... 我现在在... 朝阳区望京街道XX小区... 8号楼1单元502室";
+          let i = 0;
+          const interval = setInterval(() => {
+            setTranscribedText(fullText.slice(0, i + 1));
+            i++;
+            if (i >= fullText.length) clearInterval(interval);
+          }, 80);
+
+          setTimeout(() => {
+            clearInterval(interval);
+            setIsListening(false);
+            setIsThinking(true);
+            setDisplayedChatText('');
+            setTimeout(() => {
+              setIsThinking(false);
+              setDeliveryAddress('朝阳区望京街道XX小区8号楼1单元502室');
+              speak('收到，地址已为您修改成功。骑手将送到：朝阳区望京街道XX小区8号楼1单元502室。');
+              setTimeout(() => {
+                endVoice(true, '✓ 地址已修改成功');
+              }, 6000);
+            }, 1000);
+          }, 5000);
+        }, 2000);
+      } else if (n === '3') {
+        setIsThinking(true);
+        setDisplayedChatText('');
+        setTimeout(() => {
+          setIsThinking(false);
+          speak('正在为您转接骑手电话，请稍候...');
+          setTimeout(() => {
+            endVoice(true, '📞 正在呼叫骑手...');
+          }, 3000);
+        }, 1000);
+      }
+    };
+
     switch (voiceStep) {
       case 'MEAL_SELECT': handleMealSelect(num); break;
       case 'MEAT_SELECT': handleMeatSelect(num); break;
       case 'SPEC_SELECT': handleSpecSelect(num); break;
       case 'ADDRESS_CONFIRM': handleAddressConfirm(num); break;
+      case 'CS_MAIN': handleCSMain(num); break;
       default: break;
     }
   };
@@ -432,7 +533,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-200">
+    <div className="flex justify-center items-center h-[100dvh] w-full overflow-hidden bg-gray-200">
       <div className="phone-shell">
         {/* iOS Status Bar */}
         <div className="absolute top-0 left-0 right-0 h-11 px-6 flex items-center justify-between z-[100] pointer-events-none">
@@ -655,15 +756,14 @@ export default function App() {
                         </div>
                         <div className="h-[1px] bg-gray-100 mb-4"></div>
                         <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-                          <span className="text-[18px]">🛵 骑手正在配送</span>
-                          <span className="text-[28px] font-bold text-text-main mt-2">预计 13:05 到达</span>
+                          <span className="text-[28px] font-bold text-text-main mt-2">预计 {estimatedTime} 到达</span>
                           
                           {/* Progress Bar */}
                           <div className="w-full h-2.5 bg-gray-100 rounded-full mt-6 relative overflow-hidden">
                             <motion.div 
                               initial={{ width: 0 }}
                               animate={{ width: '66.6%' }}
-                              transition={{ duration: 3, ease: "easeInOut" }}
+                              transition={{ duration: 1.5, ease: "easeInOut" }}
                               className="absolute inset-y-0 left-0 bg-primary rounded-full"
                             />
                             {/* Segment Dividers */}
@@ -697,14 +797,14 @@ export default function App() {
                           <Check size={40} />
                         </div>
                         <h2 className="text-[22px] font-bold">今天午饭已送到</h2>
-                        <p className="text-text-sub text-[14px] mt-1">{currentMeal.name} · {currentMeal.shop} · 12:58 送达</p>
+                        <p className="text-text-sub text-[14px] mt-1">{currentMeal.name} · {currentMeal.shop} · {deliveredTime} 送达</p>
                         
                         {/* Progress Bar (All Completed) */}
                         <div className="w-full h-2.5 bg-gray-100 rounded-full mt-6 relative overflow-hidden mx-4">
                           <motion.div 
                             initial={{ width: 0 }}
                             animate={{ width: '100%' }}
-                            transition={{ duration: 3, ease: "easeInOut" }}
+                            transition={{ duration: 1.5, ease: "easeInOut" }}
                             className="absolute inset-y-0 left-0 bg-primary rounded-full"
                           />
                           {/* Segment Dividers */}
@@ -766,9 +866,13 @@ export default function App() {
                   <div className="flex items-center justify-center">
                     <Phone size={56} className="text-text-main fill-current" />
                   </div>
-                  <span className="text-text-main font-bold text-[24px]">语音点餐</span>
+                  <span className="text-text-main font-bold text-[24px]">
+                    {deliveryStatus === 'DELIVERING' ? '电话客服' : '语音点餐'}
+                  </span>
                 </button>
-                <p className="text-text-hint text-[14px] text-center mt-4">想吃什么，直接点这里跟我说</p>
+                <p className="text-text-hint text-[14px] text-center mt-4">
+                  {deliveryStatus === 'DELIVERING' ? '联系骑手或商家，解决配送问题' : '想吃什么，直接点这里跟我说'}
+                </p>
               </div>
             </motion.div>
           )}
@@ -1008,11 +1112,11 @@ export default function App() {
                               initial={{ opacity: 0, scale: 0.95 }}
                               animate={{ opacity: 1, scale: 1 }}
                               transition={{ duration: 0.5 }}
-                              className="mt-6 rounded-3xl overflow-hidden relative h-[160px] shadow-lg border border-black/5"
+                              className="mt-6 rounded-3xl overflow-hidden relative h-[160px]"
                             >
                               {/* Stage 1: Map Background */}
                               <img 
-                                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=600&h=400" 
+                                src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&q=80&w=600&h=400" 
                                 alt="Map"
                                 referrerPolicy="no-referrer"
                                 className="absolute inset-0 w-full h-full object-cover opacity-60"
@@ -1021,8 +1125,8 @@ export default function App() {
                               
                               {/* Stage 2: Text Content */}
                               <motion.div 
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
                                 transition={{ delay: 0.8, duration: 0.5 }}
                                 className="absolute inset-0 p-6 flex flex-col justify-end"
                               >
@@ -1089,6 +1193,53 @@ export default function App() {
                           正在下单...
                         </motion.p>
                       </motion.div>
+                    ) : voiceStep === 'CS_MAIN' || voiceStep === 'CS_ADDRESS_INPUT' ? (
+                      <motion.div 
+                        key="cs_view"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <VoiceMessage 
+                          isThinking={isThinking} 
+                          isTyping={isTyping} 
+                          displayedChatText={displayedChatText}
+                        >
+                          {voiceStep === 'CS_ADDRESS_INPUT' && !isListening && !isTransitioning && !isThinking && (
+                            <motion.div 
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.5 }}
+                              className="mt-6 rounded-3xl overflow-hidden relative h-[160px]"
+                            >
+                              {/* Stage 1: Map Background */}
+                              <img 
+                                src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&q=80&w=600&h=400" 
+                                alt="Map"
+                                referrerPolicy="no-referrer"
+                                className="absolute inset-0 w-full h-full object-cover opacity-60"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/40 to-transparent" />
+                              
+                              {/* Stage 2: Text Content */}
+                              <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.8, duration: 0.5 }}
+                                className="absolute inset-0 p-6 flex flex-col justify-end"
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                  <p className="text-text-sub text-[12px] font-bold tracking-wider uppercase opacity-60">新送餐地址</p>
+                                </div>
+                                <p className="text-[22px] font-bold text-text-main leading-tight">
+                                  {deliveryAddress}
+                                </p>
+                              </motion.div>
+                            </motion.div>
+                          )}
+                        </VoiceMessage>
+                      </motion.div>
                     ) : null}
                   </AnimatePresence>
                 </div>
@@ -1096,7 +1247,10 @@ export default function App() {
 
               {/* Area 3: iOS Inspired Operation Area */}
               <div className="absolute bottom-0 left-0 right-0 h-[240px] flex flex-col items-center justify-end pb-12 z-40 pointer-events-none">
-                <div className="flex flex-col gap-8 items-center w-full pointer-events-auto">
+                {/* Curved Overlay Background */}
+                <div className="absolute inset-0 bg-white/90 backdrop-blur-xl rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.08)] pointer-events-auto border-t border-white/50" />
+                
+                <div className="flex flex-col gap-8 items-center w-full pointer-events-auto relative z-10">
                   {/* Row 1: 1, 2, 3 Buttons */}
                   <div className="flex justify-center gap-6">
                     {['1', '2', '3'].map((num) => (
