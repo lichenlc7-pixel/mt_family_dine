@@ -22,7 +22,7 @@
     margin: 0;
     padding: 0;
     overscroll-behavior: none;
-    background-color: #FAFAF8;
+    background-color: red !important; /* 调试用：底层设为红色 */
   }
 
   body {
@@ -33,7 +33,9 @@
 
 @layer components {
   .phone-shell {
-    @apply w-full h-[100dvh] sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] bg-bg-warm sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
+    @apply w-full h-[100dvh] sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
+    background-color: blue !important; /* 调试用：中层设为蓝色 */
+    border-bottom: 10px solid yellow !important; /* 调试用：底部黄色边框 */
   }
   
   .card {
