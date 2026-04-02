@@ -13,11 +13,16 @@
 @layer base {
   html, body, #root {
     height: 100dvh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
+    overflow: clip;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background-color: #FAFAF8; /* 保持与应用底色一致 */
+    overscroll-behavior: none;
+    background-color: red !important; /* 调试用：底层设为红色 */
   }
 
   body {
@@ -28,15 +33,9 @@
 
 @layer components {
   .phone-shell {
-    @apply w-full h-full sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] bg-bg-warm sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative flex flex-col mx-auto;
-    /* 移动端关键：取消隐藏溢出，允许底部面板向下延伸填补缝隙 */
-    overflow: visible;
-  }
-  
-  @media (min-width: 640px) {
-    .phone-shell {
-      @apply overflow-hidden;
-    }
+    @apply w-full h-[100dvh] sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
+    background-color: blue !important; /* 调试用：中层设为蓝色 */
+    border-bottom: 10px solid yellow !important; /* 调试用：底部黄色边框 */
   }
   
   .card {
@@ -56,7 +55,6 @@
   }
 
   .safe-bottom {
-    /* 恢复合理的底部间距，解决 PC 端按钮变紧的问题 */
     padding-bottom: max(24px, env(safe-area-inset-bottom));
   }
 
@@ -70,7 +68,7 @@
     top: 100%;
     left: 0;
     right: 0;
-    height: 200px; /* 足够长，确保填满任何可能的物理缝隙 */
+    height: 100px;
     background: inherit;
     pointer-events: none;
   }
