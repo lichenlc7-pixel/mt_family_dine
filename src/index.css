@@ -22,7 +22,7 @@
     margin: 0;
     padding: 0;
     overscroll-behavior: none;
-    background-color: #FAFAF8;
+    background-color: magenta; /* 调试用显眼颜色 */
   }
 
   body {
