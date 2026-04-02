@@ -12,13 +12,12 @@
 
 @layer base {
   html, body, #root {
-    height: 100%;
+    height: 100dvh;
     width: 100%;
-    overflow: hidden;
     margin: 0;
     padding: 0;
-    overscroll-behavior: none;
-    background-color: #FAFAF8;
+    overflow: hidden;
+    background-color: #FAFAF8; /* 保持与应用底色一致 */
   }
 
   body {
@@ -29,22 +28,14 @@
 
 @layer components {
   .phone-shell {
-    @apply w-full sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] bg-bg-warm sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
-    /* 移动端：强制物理溢出，确保封死底部缝隙 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: -100px; /* 向下多画 100 像素，彻底解决 PWA 缝隙问题 */
-    padding-bottom: 100px; /* 补偿溢出的高度，确保内容不被遮挡 */
+    @apply w-full h-full sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] bg-bg-warm sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative flex flex-col mx-auto;
+    /* 移动端关键：取消隐藏溢出，允许底部面板向下延伸填补缝隙 */
+    overflow: visible;
   }
   
-  /* 桌面端：恢复正常手机壳布局 */
   @media (min-width: 640px) {
     .phone-shell {
-      position: relative;
-      inset: auto;
-      padding-bottom: 0;
+      @apply overflow-hidden;
     }
   }
   
@@ -65,7 +56,8 @@
   }
 
   .safe-bottom {
-    padding-bottom: max(32px, env(safe-area-inset-bottom));
+    /* 恢复合理的底部间距，解决 PC 端按钮变紧的问题 */
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
   }
 
   .extend-bg-bottom {
@@ -78,7 +70,7 @@
     top: 100%;
     left: 0;
     right: 0;
-    height: 100px;
+    height: 200px; /* 足够长，确保填满任何可能的物理缝隙 */
     background: inherit;
     pointer-events: none;
   }
