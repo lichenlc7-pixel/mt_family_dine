@@ -18,7 +18,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    overflow: hidden;
+    overflow: clip;
     margin: 0;
     padding: 0;
     overscroll-behavior: none;
@@ -28,27 +28,6 @@
   body {
     @apply font-sans text-text-main;
     font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
-  }
-}
-
-@layer utilities {
-  .safe-area-fill-white::after {
-    content: '';
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: env(safe-area-inset-bottom);
-    background: white;
-    z-index: 9999;
-  }
-  .safe-area-fill-blur::after {
-    content: '';
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: env(safe-area-inset-bottom);
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    z-index: 9999;
   }
 }
 
