@@ -7,6 +7,7 @@ import { useState, useEffect, useRef, ReactNode, useMemo } from 'react';
 import { Mic, Phone, Keyboard, X, Check, AlertTriangle, ChevronRight, Volume2, VolumeX, Video, Share2, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { QRCodeSVG } from 'qrcode.react';
+import { TouchFeedback } from './components/TouchFeedback';
 
 type AppState = 'WELCOME' | 'MAIN' | 'VOICE' | 'SUMMARY';
 type DeliveryStatus = 'RECOMMENDING' | 'DELIVERING' | 'DELIVERED';
@@ -534,6 +535,7 @@ export default function App() {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center overflow-hidden bg-bg-warm sm:bg-gray-200">
+      <TouchFeedback />
       <div className="phone-shell">
         {/* iOS Status Bar */}
         <div className="absolute top-0 left-0 right-0 pt-[env(safe-area-inset-top)] sm:pt-0 h-[calc(44px+env(safe-area-inset-top))] sm:h-11 px-6 flex items-center justify-between z-[100] pointer-events-none">
@@ -1262,7 +1264,7 @@ export default function App() {
               </div>
 
               {/* Area 3: iOS Inspired Operation Area */}
-              <div className="absolute bottom-0 left-0 right-0 h-[240px] flex flex-col items-center justify-end pb-12 z-40 pointer-events-none">
+              <div className="absolute bottom-0 left-0 right-0 h-[calc(240px+env(safe-area-inset-bottom))] flex flex-col items-center justify-end pb-[calc(3rem+env(safe-area-inset-bottom))] z-40 pointer-events-none">
                 {/* Curved Overlay Background */}
                 <div className="absolute inset-0 bg-white/90 backdrop-blur-xl rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.08)] pointer-events-auto border-t border-white/50" />
                 
