@@ -536,11 +536,11 @@ export default function App() {
     <div className="flex justify-center items-center h-[100dvh] w-full overflow-hidden bg-gray-200">
       <div className="phone-shell">
         {/* iOS Status Bar */}
-        <div className="absolute top-0 left-0 right-0 h-11 px-6 flex items-center justify-between z-[100] pointer-events-none">
-          <div className="text-[14px] font-bold text-black/80 w-16">{timeString}</div>
+        <div className="absolute top-0 left-0 right-0 pt-[env(safe-area-inset-top)] sm:pt-0 h-[calc(44px+env(safe-area-inset-top))] sm:h-11 px-6 flex items-center justify-between z-[100] pointer-events-none">
+          <div className="text-[14px] font-bold text-black/80 w-16 hidden sm:block">{timeString}</div>
           
           {/* Demo Status Switcher - Centered in Status Bar */}
-          <div className="pointer-events-auto flex gap-1 bg-black/5 p-0.5 rounded-full scale-95">
+          <div className="pointer-events-auto flex gap-1 bg-black/5 p-0.5 rounded-full scale-95 mx-auto sm:mx-0">
             {(['RECOMMENDING', 'DELIVERING', 'DELIVERED'] as DeliveryStatus[]).map(s => (
               <button
                 key={s}
@@ -555,7 +555,7 @@ export default function App() {
             ))}
           </div>
 
-          <div className="flex items-center gap-1.5 w-16 justify-end">
+          <div className="hidden sm:flex items-center gap-1.5 w-16 justify-end">
             <div className="flex gap-0.5 items-end h-3">
               {[1, 2, 3, 4].map(i => (
                 <div key={i} className={`w-0.5 rounded-full bg-black/80 ${i === 4 ? 'h-3' : i === 3 ? 'h-2.5' : i === 2 ? 'h-2' : 'h-1.5'}`} />
