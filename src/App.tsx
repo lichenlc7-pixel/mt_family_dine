@@ -533,14 +533,14 @@ export default function App() {
   };
 
   return (
-    <div className="flex justify-center items-center h-[100dvh] w-full overflow-hidden bg-gray-200">
+    <div className="fixed inset-0 flex justify-center items-center overflow-hidden bg-bg-warm sm:bg-gray-200">
       <div className="phone-shell">
         {/* iOS Status Bar */}
         <div className="absolute top-0 left-0 right-0 pt-[env(safe-area-inset-top)] sm:pt-0 h-[calc(44px+env(safe-area-inset-top))] sm:h-11 px-6 flex items-center justify-between z-[100] pointer-events-none">
           <div className="text-[14px] font-bold text-black/80 w-16 hidden sm:block">{timeString}</div>
           
-          {/* Demo Status Switcher - Centered in Status Bar */}
-          <div className="pointer-events-auto flex gap-1 bg-black/5 p-0.5 rounded-full scale-95 mx-auto sm:mx-0">
+          {/* Demo Status Switcher - Centered in Status Bar (Desktop Only) */}
+          <div className="pointer-events-auto hidden sm:flex gap-1 bg-black/5 p-0.5 rounded-full scale-95 mx-auto sm:mx-0">
             {(['RECOMMENDING', 'DELIVERING', 'DELIVERED'] as DeliveryStatus[]).map(s => (
               <button
                 key={s}
@@ -873,6 +873,22 @@ export default function App() {
                 <p className="text-text-hint text-[14px] text-center mt-4">
                   {deliveryStatus === 'DELIVERING' ? '联系骑手或商家，解决配送问题' : '想吃什么，直接点这里跟我说'}
                 </p>
+
+                {/* Mobile Demo Status Switcher */}
+                <div className="sm:hidden pointer-events-auto flex gap-1 bg-black/5 p-0.5 rounded-full scale-95 mt-4">
+                  {(['RECOMMENDING', 'DELIVERING', 'DELIVERED'] as DeliveryStatus[]).map(s => (
+                    <button
+                      key={s}
+                      onClick={() => {
+                        setDeliveryStatus(s);
+                        stopSpeaking();
+                      }}
+                      className={`px-2.5 py-1 rounded-full text-[11px] whitespace-nowrap transition-colors ${deliveryStatus === s ? 'bg-primary font-bold text-black' : 'bg-transparent text-black/40'}`}
+                    >
+                      {s === 'RECOMMENDING' ? '推荐' : s === 'DELIVERING' ? '配送' : '送达'}
+                    </button>
+                  ))}
+                </div>
               </div>
             </motion.div>
           )}
