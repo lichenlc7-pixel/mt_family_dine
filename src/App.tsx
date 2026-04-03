@@ -596,10 +596,10 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="flex-1 flex flex-col px-8 safe-top safe-bottom"
             >
-              <div className="mt-20 flex flex-col items-center">
-                <div className="w-[200px] h-[200px] bg-primary/20 rounded-full flex items-center justify-center relative overflow-hidden">
+              <div className="mt-8 sm:mt-20 flex flex-col items-center flex-1 min-h-0 overflow-y-auto pb-4">
+                <div className="w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] shrink-0 bg-primary/20 rounded-full flex items-center justify-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-primary opacity-10 animate-pulse"></div>
-                  <svg width="120" height="120" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="80%" height="80%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     {/* Background Circle */}
                     <circle cx="50" cy="50" r="45" fill="#FFE346" fillOpacity="0.3" />
                     
@@ -615,8 +615,8 @@ export default function App() {
                     <path d="M50 45C50 45 48 40 45 40C42 40 40 43 40 46C40 50 50 55 50 55C50 55 60 50 60 46C60 43 58 40 55 40C52 40 50 45 50 45Z" fill="#FF4B4B" />
                   </svg>
                 </div>
-                <h1 className="text-[28px] font-bold mt-10 text-text-main">美团外卖，安心的一餐</h1>
-                <div className="mt-6 text-center text-text-sub text-[16px] leading-[1.8]">
+                <h1 className="text-[24px] sm:text-[28px] font-bold mt-6 sm:mt-10 text-text-main shrink-0">美团外卖，安心的一餐</h1>
+                <div className="mt-4 sm:mt-6 text-center text-text-sub text-[15px] sm:text-[16px] leading-[1.8] shrink-0">
                   <p>每天这里会推荐今天吃什么</p>
                   <p>告诉助手想吃什么，饭就送到门口</p>
                   <p>无需您付款，放心点</p>
@@ -624,12 +624,12 @@ export default function App() {
                 
                 <button 
                   onClick={() => setShowShareModal(true)}
-                  className="mt-8 flex items-center gap-2 px-4 py-2 bg-black/5 rounded-full text-[14px] text-text-sub hover:bg-black/10 transition-colors"
+                  className="mt-6 sm:mt-8 shrink-0 flex items-center gap-2 px-4 py-2 bg-black/5 rounded-full text-[14px] text-text-sub hover:bg-black/10 transition-colors"
                 >
                   <Share2 size={16} /> 分享给家人体验
                 </button>
               </div>
-              <div className="mt-auto">
+              <div className="mt-auto pt-2 pb-6 sm:pb-8 shrink-0">
                 <button onClick={() => setAppState('MAIN')} className="btn-primary">好的，知道了</button>
               </div>
 
