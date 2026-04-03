@@ -861,25 +861,25 @@ export default function App() {
 
               {/* Area 3: Bottom Interaction */}
               <div 
-                className="bg-white border-t border-gray-100 p-6 safe-bottom flex flex-col items-center"
+                className="bg-gradient-to-b from-white to-bg-warm sm:from-white sm:to-white border-t border-gray-100 p-4 sm:p-6 safe-bottom flex flex-col items-center"
               >
                 <button 
                   onClick={startVoice} 
-                  className="w-full h-[120px] bg-primary rounded-[32px] flex flex-col items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform"
+                  className="w-full h-[90px] sm:h-[120px] bg-primary rounded-[24px] sm:rounded-[32px] flex flex-col items-center justify-center gap-1 sm:gap-2 shadow-lg active:scale-[0.98] transition-transform"
                 >
-                  <div className="flex items-center justify-center">
-                    <Phone size={56} className="text-text-main fill-current" />
+                  <div className="flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14">
+                    <Phone className="w-full h-full text-text-main fill-current" />
                   </div>
-                  <span className="text-text-main font-bold text-[24px]">
+                  <span className="text-text-main font-bold text-[20px] sm:text-[24px]">
                     {deliveryStatus === 'DELIVERING' ? '电话客服' : '语音点餐'}
                   </span>
                 </button>
-                <p className="text-text-hint text-[14px] text-center mt-4">
+                <p className="text-text-hint text-[12px] sm:text-[14px] text-center mt-3 sm:mt-4">
                   {deliveryStatus === 'DELIVERING' ? '联系骑手或商家，解决配送问题' : '想吃什么，直接点这里跟我说'}
                 </p>
 
                 {/* Mobile Demo Status Switcher */}
-                <div className="sm:hidden pointer-events-auto flex gap-1 bg-black/5 p-0.5 rounded-full scale-95 mt-4">
+                <div className="sm:hidden pointer-events-auto flex gap-1 bg-black/5 p-0.5 rounded-full scale-90 mt-3">
                   {(['RECOMMENDING', 'DELIVERING', 'DELIVERED'] as DeliveryStatus[]).map(s => (
                     <button
                       key={s}
@@ -1266,22 +1266,22 @@ export default function App() {
               </div>
 
               {/* Area 3: iOS Inspired Operation Area */}
-              <div className="absolute bottom-0 left-0 right-0 h-[calc(240px+env(safe-area-inset-bottom))] flex flex-col items-center justify-end pb-[calc(3rem+env(safe-area-inset-bottom))] z-40 pointer-events-none">
+              <div className="absolute bottom-0 left-0 right-0 h-[calc(200px+env(safe-area-inset-bottom))] sm:h-[calc(240px+env(safe-area-inset-bottom))] flex flex-col items-center justify-end pb-[calc(2rem+env(safe-area-inset-bottom))] sm:pb-[calc(3rem+env(safe-area-inset-bottom))] z-40 pointer-events-none">
                 {/* Curved Overlay Background */}
                 <div 
-                  className="absolute inset-0 bg-white/90 backdrop-blur-xl rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.08)] pointer-events-auto border-t border-white/50" 
+                  className="absolute inset-0 bg-gradient-to-b from-white/90 to-bg-warm/90 sm:from-white/90 sm:to-white/90 backdrop-blur-xl rounded-t-[32px] sm:rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.08)] pointer-events-auto border-t border-white/50" 
                 />
                 
-                <div className="flex flex-col gap-8 items-center w-full pointer-events-auto relative z-10">
+                <div className="flex flex-col gap-5 sm:gap-8 items-center w-full pointer-events-auto relative z-10">
                   {/* Row 1: 1, 2, 3 Buttons */}
-                  <div className="flex justify-center gap-6">
+                  <div className="flex justify-center gap-5 sm:gap-6">
                     {['1', '2', '3'].map((num) => (
                       <button 
                         key={num}
                         onClick={() => handleDial(num)}
-                        className="w-[64px] h-[64px] rounded-full flex items-center justify-center transition-all bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] active:scale-95"
+                        className="w-[56px] h-[56px] sm:w-[64px] sm:h-[64px] rounded-full flex items-center justify-center transition-all bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] active:scale-95"
                       >
-                        <span className="text-[28px] font-bold text-black">{num}</span>
+                        <span className="text-[24px] sm:text-[28px] font-bold text-black">{num}</span>
                       </button>
                     ))}
                   </div>
@@ -1290,9 +1290,11 @@ export default function App() {
                   <div className="flex justify-center">
                     <button 
                       onClick={() => setAppState('MAIN')}
-                      className="w-[64px] h-[64px] rounded-full flex items-center justify-center transition-all bg-[#FF3B30] text-white shadow-[0_4px_12px_rgba(255,59,48,0.3)] active:scale-95"
+                      className="w-[56px] h-[56px] sm:w-[64px] sm:h-[64px] rounded-full flex items-center justify-center transition-all bg-[#FF3B30] text-white shadow-[0_4px_12px_rgba(255,59,48,0.3)] active:scale-95"
                     >
-                      <Phone size={28} className="fill-current rotate-[135deg]" />
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center">
+                        <Phone className="w-full h-full fill-current rotate-[135deg]" />
+                      </div>
                     </button>
                   </div>
                 </div>
