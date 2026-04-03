@@ -706,7 +706,22 @@ export default function App() {
               className="flex-1 min-h-0 flex flex-col"
             >
               {/* Area 2: Main Card */}
-              <div className="flex-1 min-h-0 px-5 sm:px-6 pt-[calc(56px+env(safe-area-inset-top))] sm:pt-16 pb-4 flex flex-col overflow-y-auto">
+              <div className="flex-1 min-h-0 px-5 sm:px-6 pt-[calc(16px+env(safe-area-inset-top))] sm:pt-16 pb-4 flex flex-col overflow-y-auto">
+                {/* Mobile Demo Status Switcher (Moved to top) */}
+                <div className="sm:hidden pointer-events-auto flex justify-center gap-1 bg-black/5 p-0.5 rounded-full scale-90 mb-3 mx-auto w-fit shrink-0">
+                  {(['RECOMMENDING', 'DELIVERING', 'DELIVERED'] as DeliveryStatus[]).map(s => (
+                    <button
+                      key={s}
+                      onClick={() => {
+                        setDeliveryStatus(s);
+                        stopSpeaking();
+                      }}
+                      className={`px-2.5 py-1 rounded-full text-[11px] whitespace-nowrap transition-colors ${deliveryStatus === s ? 'bg-primary font-bold text-black' : 'bg-transparent text-black/40'}`}
+                    >
+                      {s === 'RECOMMENDING' ? '推荐' : s === 'DELIVERING' ? '配送' : '送达'}
+                    </button>
+                  ))}
+                </div>
                 <div className="card flex-1 flex flex-col min-h-0 relative">
                   {/* Greeting inside card */}
                   <div className="mb-4 shrink-0">
@@ -865,34 +880,18 @@ export default function App() {
               >
                 <button 
                   onClick={startVoice} 
-                  className="w-full h-[90px] sm:h-[120px] bg-primary rounded-[24px] sm:rounded-[32px] flex flex-col items-center justify-center gap-1 sm:gap-2 shadow-lg active:scale-[0.98] transition-transform"
+                  className="w-full h-[115px] sm:h-[120px] bg-primary rounded-[28px] sm:rounded-[32px] flex flex-col items-center justify-center gap-1 sm:gap-2 shadow-lg active:scale-[0.98] transition-transform"
                 >
-                  <div className="flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14">
+                  <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14">
                     <Phone className="w-full h-full text-text-main fill-current" />
                   </div>
-                  <span className="text-text-main font-bold text-[20px] sm:text-[24px]">
+                  <span className="text-text-main font-bold text-[22px] sm:text-[24px]">
                     {deliveryStatus === 'DELIVERING' ? '电话客服' : '语音点餐'}
                   </span>
                 </button>
                 <p className="hidden sm:block text-text-hint text-[12px] sm:text-[14px] text-center mt-3 sm:mt-4">
                   {deliveryStatus === 'DELIVERING' ? '联系骑手或商家，解决配送问题' : '想吃什么，直接点这里跟我说'}
                 </p>
-
-                {/* Mobile Demo Status Switcher */}
-                <div className="sm:hidden pointer-events-auto flex gap-1 bg-black/5 p-0.5 rounded-full scale-90 mt-3">
-                  {(['RECOMMENDING', 'DELIVERING', 'DELIVERED'] as DeliveryStatus[]).map(s => (
-                    <button
-                      key={s}
-                      onClick={() => {
-                        setDeliveryStatus(s);
-                        stopSpeaking();
-                      }}
-                      className={`px-2.5 py-1 rounded-full text-[11px] whitespace-nowrap transition-colors ${deliveryStatus === s ? 'bg-primary font-bold text-black' : 'bg-transparent text-black/40'}`}
-                    >
-                      {s === 'RECOMMENDING' ? '推荐' : s === 'DELIVERING' ? '配送' : '送达'}
-                    </button>
-                  ))}
-                </div>
               </div>
             </motion.div>
           )}
