@@ -706,8 +706,8 @@ export default function App() {
               className="flex-1 min-h-0 flex flex-col"
             >
               {/* Area 2: Main Card */}
-              <div className="flex-1 min-h-0 px-6 pt-12 pb-4 flex flex-col overflow-y-auto">
-                <div className="card flex-1 flex flex-col min-h-0 relative">
+              <div className="flex-1 min-h-0 px-5 sm:px-6 pt-6 sm:pt-12 pb-4 flex flex-col overflow-y-auto">
+                <div className="card flex flex-col min-h-full relative">
                   {/* Greeting inside card */}
                   <div className="mb-4 shrink-0">
                     <span className="text-text-main text-[20px] font-bold">
@@ -717,25 +717,25 @@ export default function App() {
 
                   {deliveryStatus === 'RECOMMENDING' && (
                     <>
-                      <div className="flex-1 flex flex-col items-center justify-center py-2 min-h-0 overflow-hidden">
+                      <div className="flex-1 flex flex-col items-center justify-center py-1 sm:py-2 min-h-0 w-full">
                         <img 
                           src={currentMeal.image} 
                           alt={currentMeal.name}
                           referrerPolicy="no-referrer"
-                          className="w-full aspect-square object-cover rounded-2xl shadow-md shrink-0"
+                          className="w-full flex-1 min-h-[120px] max-h-[280px] sm:max-h-[320px] object-cover rounded-2xl shadow-md"
                         />
-                        <h2 className="text-[26px] font-bold mt-4 text-center">{currentMeal.name}</h2>
+                        <h2 className="text-[22px] sm:text-[26px] font-bold mt-3 sm:mt-4 text-center shrink-0">{currentMeal.name}</h2>
                         <div className="flex items-center gap-2 mt-1 shrink-0">
-                          <p className="text-text-sub text-[16px]">{currentMeal.shop}</p>
-                          <span className="text-text-hint text-[16px]">·</span>
-                          <p className="text-orange-600 font-bold text-[16px]">预计{currentMeal.deliveryTime}送达</p>
+                          <p className="text-text-sub text-[14px] sm:text-[16px]">{currentMeal.shop}</p>
+                          <span className="text-text-hint text-[14px] sm:text-[16px]">·</span>
+                          <p className="text-orange-600 font-bold text-[14px] sm:text-[16px]">预计{currentMeal.deliveryTime}送达</p>
                         </div>
-                        <p className="text-text-hint text-[15px] mt-3 text-center line-clamp-2 px-4">{currentMeal.desc}</p>
+                        <p className="text-text-hint text-[13px] sm:text-[15px] mt-2 sm:mt-3 text-center line-clamp-2 px-2 sm:px-4 shrink-0">{currentMeal.desc}</p>
                       </div>
-                      <div className="h-[1px] bg-gray-100 my-4 shrink-0"></div>
+                      <div className="h-[1px] bg-gray-100 my-3 sm:my-4 shrink-0"></div>
                       <div className="shrink-0 flex gap-3">
-                        <button onClick={handleChangeMeal} className="btn-secondary flex-1 h-[64px] text-[20px]">换一个</button>
-                        <button onClick={handleOrder} className="btn-primary flex-1 h-[64px] text-[20px]">就吃这个</button>
+                        <button onClick={handleChangeMeal} className="btn-secondary flex-1 h-[52px] sm:h-[64px] text-[18px] sm:text-[20px]">换一个</button>
+                        <button onClick={handleOrder} className="btn-primary flex-1 h-[52px] sm:h-[64px] text-[18px] sm:text-[20px]">就吃这个</button>
                       </div>
                     </>
                   )}
