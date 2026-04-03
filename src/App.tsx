@@ -706,8 +706,8 @@ export default function App() {
               className="flex-1 min-h-0 flex flex-col"
             >
               {/* Area 2: Main Card */}
-              <div className="flex-1 min-h-0 px-5 sm:px-6 pt-6 sm:pt-12 pb-4 flex flex-col overflow-y-auto">
-                <div className="card flex flex-col min-h-full relative">
+              <div className="flex-1 min-h-0 px-5 sm:px-6 pt-[calc(56px+env(safe-area-inset-top))] sm:pt-16 pb-4 flex flex-col overflow-y-auto">
+                <div className="card flex-1 flex flex-col min-h-0 relative">
                   {/* Greeting inside card */}
                   <div className="mb-4 shrink-0">
                     <span className="text-text-main text-[20px] font-bold">
@@ -722,7 +722,7 @@ export default function App() {
                           src={currentMeal.image} 
                           alt={currentMeal.name}
                           referrerPolicy="no-referrer"
-                          className="w-full flex-1 min-h-[120px] max-h-[280px] sm:max-h-[320px] object-cover rounded-2xl shadow-md"
+                          className="w-full aspect-square object-cover rounded-2xl shadow-md shrink min-h-[120px]"
                         />
                         <h2 className="text-[22px] sm:text-[26px] font-bold mt-3 sm:mt-4 text-center shrink-0">{currentMeal.name}</h2>
                         <div className="flex items-center gap-2 mt-1 shrink-0">
