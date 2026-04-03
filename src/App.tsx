@@ -730,7 +730,7 @@ export default function App() {
                           <span className="text-text-hint text-[14px] sm:text-[16px]">·</span>
                           <p className="text-orange-600 font-bold text-[14px] sm:text-[16px]">预计{currentMeal.deliveryTime}送达</p>
                         </div>
-                        <p className="text-text-hint text-[13px] sm:text-[15px] mt-2 sm:mt-3 text-center line-clamp-2 px-2 sm:px-4 shrink-0">{currentMeal.desc}</p>
+                        <p className="hidden sm:block text-text-hint text-[13px] sm:text-[15px] mt-2 sm:mt-3 text-center line-clamp-2 px-2 sm:px-4 shrink-0">{currentMeal.desc}</p>
                       </div>
                       <div className="h-[1px] bg-gray-100 my-3 sm:my-4 shrink-0"></div>
                       <div className="shrink-0 flex gap-3">
@@ -874,7 +874,7 @@ export default function App() {
                     {deliveryStatus === 'DELIVERING' ? '电话客服' : '语音点餐'}
                   </span>
                 </button>
-                <p className="text-text-hint text-[12px] sm:text-[14px] text-center mt-3 sm:mt-4">
+                <p className="hidden sm:block text-text-hint text-[12px] sm:text-[14px] text-center mt-3 sm:mt-4">
                   {deliveryStatus === 'DELIVERING' ? '联系骑手或商家，解决配送问题' : '想吃什么，直接点这里跟我说'}
                 </p>
 
