@@ -624,12 +624,12 @@ export default function App() {
                 
                 <button 
                   onClick={() => setShowShareModal(true)}
-                  className="mt-6 sm:mt-8 shrink-0 flex items-center gap-2 px-4 py-2 bg-black/5 rounded-full text-[14px] text-text-sub hover:bg-black/10 transition-colors"
+                  className="mt-6 sm:mt-8 mb-6 sm:mb-0 shrink-0 flex items-center gap-2 px-4 py-2 bg-black/5 rounded-full text-[14px] text-text-sub hover:bg-black/10 transition-colors"
                 >
                   <Share2 size={16} /> 分享给家人体验
                 </button>
               </div>
-              <div className="mt-auto pt-2 pb-6 sm:pb-8 shrink-0">
+              <div className="mt-auto pt-4 sm:pt-6 pb-6 sm:pb-8 shrink-0 w-full">
                 <button onClick={() => setAppState('MAIN')} className="btn-primary">好的，知道了</button>
               </div>
 
