@@ -30,7 +30,7 @@
 
 @layer components {
   .phone-shell {
-    @apply box-border w-full h-[100dvh] sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
+    @apply box-border w-full h-[100dvh] sm:w-[390px] sm:h-[844px] sm:max-h-[95vh] bg-bg-warm sm:rounded-[40px] sm:border-[8px] border-gray-800 sm:shadow-2xl relative overflow-hidden flex flex-col mx-auto;
   }
   
   .card {
@@ -51,21 +51,6 @@
 
   .safe-bottom {
     padding-bottom: max(24px, env(safe-area-inset-bottom));
-  }
-
-  .extend-bg-bottom {
-    position: relative;
-  }
-
-  .extend-bg-bottom::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: inherit;
-    pointer-events: none;
   }
 }
 
